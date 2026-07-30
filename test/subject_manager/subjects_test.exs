@@ -19,4 +19,51 @@ defmodule SubjectManager.SubjectsTest do
                MapSet.new([first_subject.id, second_subject.id])
     end
   end
+
+  describe "list_subjects/1" do
+    test "given a name query when list_subjects is called then returns matching subjects case insensitively" do
+      matching_subject = Repo.insert!(%Subject{name: "Lionel Messi"})
+      Repo.insert!(%Subject{name: "Luis Suárez"})
+
+      subjects = Subjects.list_subjects(%{q: "MESS"})
+
+      assert [matching_subject.id] == Enum.map(subjects, & &1.id)
+    end
+
+    test "given a position when list_subjects is called then returns subjects with that position" do
+      forward = Repo.insert!(%Subject{name: "Lionel Messi", position: :forward})
+      Repo.insert!(%Subject{name: "Emiliano Martínez", position: :goalkeeper})
+
+      subjects = Subjects.list_subjects(%{position: :forward})
+
+      assert [forward.id] == Enum.map(subjects, & &1.id)
+    end
+
+    test "given name sorting when list_subjects is called then returns subjects in ascending order" do
+      first_subject = Repo.insert!(%Subject{name: "Beta"})
+      second_subject = Repo.insert!(%Subject{name: "Alpha"})
+
+      subjects = Subjects.list_subjects(%{sort_by: :name})
+
+      assert [second_subject.id, first_subject.id] == Enum.map(subjects, & &1.id)
+    end
+
+    test "given team sorting when list_subjects is called then returns subjects in ascending order" do
+      first_subject = Repo.insert!(%Subject{name: "Lionel Messi", team: "Zeta"})
+      second_subject = Repo.insert!(%Subject{name: "Luis Suárez", team: "Alpha"})
+
+      subjects = Subjects.list_subjects(%{sort_by: :team})
+
+      assert [second_subject.id, first_subject.id] == Enum.map(subjects, & &1.id)
+    end
+
+    test "given position sorting when list_subjects is called then returns subjects in ascending order" do
+      first_subject = Repo.insert!(%Subject{name: "Lionel Messi", position: :forward})
+      second_subject = Repo.insert!(%Subject{name: "Emiliano Martínez", position: :goalkeeper})
+
+      subjects = Subjects.list_subjects(%{sort_by: :position})
+
+      assert [first_subject.id, second_subject.id] == Enum.map(subjects, & &1.id)
+    end
+  end
 end
