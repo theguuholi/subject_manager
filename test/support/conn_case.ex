@@ -20,6 +20,7 @@ defmodule SubjectManagerWeb.ConnCase do
   using do
     quote do
       use SubjectManagerWeb, :verified_routes
+
       import Phoenix.ConnTest
       import Plug.Conn
       import SubjectManagerWeb.ConnCase
