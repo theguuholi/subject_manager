@@ -22,7 +22,54 @@
       ]}
     />
     <.input field={form[:bio]} type="textarea" label="Bio" />
-    <.input field={form[:image_path]} label="Image path" />
+
+    <div id="subject-image-upload" class="space-y-4">
+      <div
+        :if={@subject.image_path && @subject.image_path != "/images/placeholder.jpg"}
+        id="subject-current-image"
+      >
+        <p class="text-sm font-semibold leading-6 text-zinc-800">Current image</p>
+        <img
+          src={@subject.image_path}
+          alt={@subject.name || "Subject image"}
+          class="h-24 w-24 object-cover"
+        />
+      </div>
+
+      <div class="container" phx-drop-target={@uploads.image.ref}>
+        <.live_file_input upload={@uploads.image} /> or drag and drop
+      </div>
+
+      <div class="text-sm leading-6 text-zinc-600">
+        Add up to {@uploads.image.max_entries} photo
+        (max {trunc(@uploads.image.max_file_size / 1_000_000)} mb each)
+      </div>
+
+      <article
+        :for={entry <- @uploads.image.entries}
+        class="flex items-center justify-between gap-4"
+        id={entry.ref}
+      >
+        <figure
+          id="subject-image-preview"
+          class="flex flex-col items-center justify-between rounded-md bg-zinc-100 p-4"
+        >
+          <.live_img_preview entry={entry} class="h-16 w-16 object-cover" />
+          <figcaption class="text-sm text-zinc-800">{entry.client_name}</figcaption>
+        </figure>
+
+        <div class="flex w-full flex-col items-center p-8">
+          <p :for={err <- upload_errors(@uploads.image, entry)} class="flex flex-col text-red-500">
+            {Phoenix.Naming.humanize(err)}
+          </p>
+          <progress value={entry.progress} max="100">{entry.progress}%</progress>
+        </div>
+
+        <button type="button" phx-click="cancel" phx-target={@myself} phx-value-ref={entry.ref}>
+          Cancel
+        </button>
+      </article>
+    </div>
 
     <:actions>
       <.button phx-disable-with="Saving...">Save Subject</.button>

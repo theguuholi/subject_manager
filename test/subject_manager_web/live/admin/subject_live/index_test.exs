@@ -59,8 +59,7 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.IndexTest do
         name: "New Subject",
         team: "New Team",
         position: "midfielder",
-        bio: "A new subject biography",
-        image_path: "/images/new-subject.jpg"
+        bio: "A new subject biography"
       }
 
       {:ok, redirected_view, _html} =
@@ -73,6 +72,60 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.IndexTest do
 
       assert has_element?(redirected_view, "#flash-info", "Subject created successfully")
       assert has_element?(redirected_view, "#subject-#{created_subject.id}", attrs.name)
+
+      assert has_element?(
+               redirected_view,
+               "#subject-#{created_subject.id} img[src='/images/placeholder.jpg']"
+             )
+    end
+
+    test "given an image upload when the new form is submitted then stores and renders the uploaded image",
+         %{
+           conn: conn
+         } do
+      conn = log_in_user(conn, admin_fixture())
+      {:ok, view, _html} = live(conn, ~p"/admin/subjects/new")
+
+      upload =
+        file_input(view, "#subject-form", :image, [
+          %{
+            last_modified: 1_594_171_879_000,
+            name: "new-subject.jpg",
+            content: "fake image content",
+            type: "image/jpeg"
+          }
+        ])
+
+      assert render_upload(upload, "new-subject.jpg", 100)
+
+      attrs = %{
+        name: "Uploaded Subject",
+        team: "Uploaded Team",
+        position: "defender",
+        bio: "An uploaded subject biography"
+      }
+
+      {:ok, redirected_view, _html} =
+        view
+        |> form("#subject-form", subject: attrs)
+        |> render_submit()
+        |> follow_redirect(conn, ~p"/admin/subjects")
+
+      created_subject = Repo.get_by!(Subject, name: attrs.name)
+
+      on_exit(fn ->
+        "priv/static"
+        |> Path.join(created_subject.image_path)
+        |> File.rm()
+      end)
+
+      assert String.starts_with?(created_subject.image_path, "/uploads/")
+      assert has_element?(redirected_view, "#subject-#{created_subject.id}")
+
+      assert has_element?(
+               redirected_view,
+               "#subject-#{created_subject.id} img[src='#{created_subject.image_path}']"
+             )
     end
 
     test "given an existing subject when the edit action is opened then prepopulates the form", %{
