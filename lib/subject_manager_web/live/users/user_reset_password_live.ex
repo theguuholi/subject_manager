@@ -5,7 +5,7 @@ defmodule SubjectManagerWeb.UserResetPasswordLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
+    <section class="mx-auto max-w-sm">
       <.header class="text-center">Reset Password</.header>
 
       <.simple_form
@@ -34,7 +34,7 @@ defmodule SubjectManagerWeb.UserResetPasswordLive do
         <.link href={~p"/users/register"}>Register</.link>
         | <.link href={~p"/users/log_in"}>Log in</.link>
       </p>
-    </div>
+    </section>
     """
   end
 

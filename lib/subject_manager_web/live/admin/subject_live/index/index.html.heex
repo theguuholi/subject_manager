@@ -5,9 +5,9 @@
   </:actions>
 </.header>
 
-<div id="subjects">
+<section id="subjects">
   <.subject_row :for={subject <- @subjects} subject={subject} />
-</div>
+</section>
 
 <.modal
   :if={@live_action in [:new, :edit]}

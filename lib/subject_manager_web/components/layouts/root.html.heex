@@ -13,13 +13,13 @@
   </head>
   <body class="bg-white">
     <header class="px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
-        <div class="flex items-center gap-4">
+      <nav class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
+        <section class="flex items-center gap-4">
           <a href="/">
-            <img src={~p"/images/subject-manager-logo.png"} width="175" />
+            <img src={~p"/images/subject-manager-logo.png"} width="175" alt="Subject Manager" />
           </a>
-        </div>
-        <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
+        </section>
+        <section class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
           <.link navigate={~p"/subjects"}>
             Subjects
           </.link>
@@ -69,8 +69,8 @@
               </li>
             <% end %>
           </ul>
-        </div>
-      </div>
+        </section>
+      </nav>
     </header>
     {@inner_content}
   </body>

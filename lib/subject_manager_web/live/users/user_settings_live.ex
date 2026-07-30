@@ -10,8 +10,8 @@ defmodule SubjectManagerWeb.UserSettingsLive do
       <:subtitle>Manage your account email address and password settings</:subtitle>
     </.header>
 
-    <div class="space-y-12 divide-y">
-      <div>
+    <section class="space-y-12 divide-y">
+      <section>
         <.simple_form
           for={@email_form}
           id="email_form"
@@ -32,8 +32,8 @@ defmodule SubjectManagerWeb.UserSettingsLive do
             <.button phx-disable-with="Changing...">Change Email</.button>
           </:actions>
         </.simple_form>
-      </div>
-      <div>
+      </section>
+      <section>
         <.simple_form
           for={@password_form}
           id="password_form"
@@ -68,8 +68,8 @@ defmodule SubjectManagerWeb.UserSettingsLive do
             <.button phx-disable-with="Changing...">Change Password</.button>
           </:actions>
         </.simple_form>
-      </div>
-    </div>
+      </section>
+    </section>
     """
   end
 

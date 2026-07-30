@@ -3,7 +3,7 @@ defmodule SubjectManagerWeb.UserLoginLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
+    <section class="mx-auto max-w-sm">
       <.header class="text-center">
         Log in to account
         <:subtitle>
@@ -31,7 +31,7 @@ defmodule SubjectManagerWeb.UserLoginLive do
           </.button>
         </:actions>
       </.simple_form>
-    </div>
+    </section>
     """
   end
 

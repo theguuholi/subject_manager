@@ -7,7 +7,7 @@ defmodule SubjectManagerWeb.CustomComponents do
 
   def badge(assigns) do
     ~H"""
-    <div class={[
+    <span class={[
       "rounded-md px-2 py-1 text-xs font-medium uppercase inline-block border",
       @status == :forward && "text-red-600 border-red-600",
       @status == :midfielder && "text-blue-600 border-blue-600",
@@ -17,7 +17,7 @@ defmodule SubjectManagerWeb.CustomComponents do
       @class
     ]}>
       {@status}
-    </div>
+    </span>
     """
   end
 end
