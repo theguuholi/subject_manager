@@ -66,4 +66,17 @@ defmodule SubjectManager.SubjectsTest do
       assert [first_subject.id, second_subject.id] == Enum.map(subjects, & &1.id)
     end
   end
+
+  describe "list_subjects/3" do
+    test "given a limit and offset when list_subjects is called then returns one page of subjects" do
+      subjects =
+        for index <- 1..3 do
+          Repo.insert!(%Subject{name: "Subject #{index}"})
+        end
+
+      page = Subjects.list_subjects(%{}, 1, 1)
+
+      assert [Enum.at(subjects, 1).id] == Enum.map(page, & &1.id)
+    end
+  end
 end

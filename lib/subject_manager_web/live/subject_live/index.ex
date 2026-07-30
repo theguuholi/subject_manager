@@ -7,17 +7,27 @@ defmodule SubjectManagerWeb.SubjectLive.Index do
 
   @positions ~w(forward midfielder winger defender goalkeeper)
   @sort_fields ~w(name team position)
+  @page_size 9
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Subjects")}
+    socket =
+      socket
+      |> assign(page_title: "Subjects")
+      |> stream_configure(:subjects, dom_id: &"subject-#{&1.id}")
+
+    {:ok, socket}
   end
 
   def handle_params(params, _uri, socket) do
     filters = filters_from_params(params)
+    subjects = Subjects.list_subjects(filters, @page_size, 0)
 
     {:noreply,
      socket
-     |> assign(:subjects, Subjects.list_subjects(filters))
+     |> stream(:subjects, subjects, reset: true)
+     |> assign(:filters, filters)
+     |> assign(:offset, length(subjects))
+     |> assign(:has_more, length(subjects) == @page_size)
      |> assign(:form, to_form(params, as: :filter))}
   end
 
@@ -25,6 +35,21 @@ defmodule SubjectManagerWeb.SubjectLive.Index do
     params = Map.get(params, "filter", params)
 
     {:noreply, push_patch(socket, to: filter_path(params))}
+  end
+
+  def handle_event("load-more", _params, %{assigns: %{has_more: false}} = socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("load-more", _params, socket) do
+    new_subjects =
+      Subjects.list_subjects(socket.assigns.filters, @page_size, socket.assigns.offset)
+
+    {:noreply,
+     socket
+     |> stream(:subjects, new_subjects)
+     |> assign(:offset, socket.assigns.offset + length(new_subjects))
+     |> assign(:has_more, length(new_subjects) == @page_size)}
   end
 
   attr(:subject, SubjectManager.Subjects.Subject, required: true)

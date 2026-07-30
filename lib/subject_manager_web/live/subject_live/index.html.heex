@@ -1,10 +1,16 @@
 <div class="subject-index">
   <.filter_form form={@form} />
 
-  <div class="subjects" id="subjects">
+  <div class="subjects" id="subjects" phx-update="stream">
     <div id="empty" class="no-results only:block hidden">
       No subjects found. Try changing your filters.
     </div>
-    <.subject :for={subject <- @subjects} subject={subject} dom_id={"subject-#{subject.id}"} />
+    <.subject
+      :for={{dom_id, subject} <- @streams.subjects}
+      subject={subject}
+      dom_id={dom_id}
+    />
   </div>
+
+  <div :if={@has_more} id="infinite-scroll" phx-hook="InfiniteScroll"></div>
 </div>
