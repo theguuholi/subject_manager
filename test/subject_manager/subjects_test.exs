@@ -81,4 +81,12 @@ defmodule SubjectManager.SubjectsTest do
       assert [Enum.at(subjects, 1).id] == Enum.map(page, & &1.id)
     end
   end
+
+  describe "get_subject!/1" do
+    test "given an existing subject id when get_subject is called then returns the subject" do
+      subject = Repo.insert!(%Subject{name: "Lionel Messi"})
+
+      assert Subjects.get_subject!(subject.id) == subject
+    end
+  end
 end
