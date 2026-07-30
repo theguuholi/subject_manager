@@ -164,6 +164,26 @@ defmodule SubjectManagerWeb.UserAuth do
     end
   end
 
+  def on_mount(:ensure_admin, _params, session, socket) do
+    socket = mount_current_user(socket, session)
+
+    case socket.assigns.current_user do
+      %{role: :admin} ->
+        {:cont, socket}
+
+      _user ->
+        socket =
+          socket
+          |> Phoenix.LiveView.put_flash(
+            :error,
+            "You must be an administrator to access this page."
+          )
+          |> Phoenix.LiveView.redirect(to: ~p"/")
+
+        {:halt, socket}
+    end
+  end
+
   def on_mount(:redirect_if_user_is_authenticated, _params, session, socket) do
     socket = mount_current_user(socket, session)
 
@@ -211,6 +231,18 @@ defmodule SubjectManagerWeb.UserAuth do
       |> redirect(to: ~p"/users/log_in")
       |> halt()
     end
+  end
+
+  @doc """
+  Used for routes that require an administrator.
+  """
+  def require_admin(%{assigns: %{current_user: %{role: :admin}}} = conn, _opts), do: conn
+
+  def require_admin(conn, _opts) do
+    conn
+    |> put_flash(:error, "You must be an administrator to access this page.")
+    |> redirect(to: ~p"/")
+    |> halt()
   end
 
   defp put_token_in_session(conn, token) do

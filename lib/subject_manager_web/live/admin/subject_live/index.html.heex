@@ -1,0 +1,26 @@
+<.header>
+  Subjects
+  <:actions>
+    <.link patch={~p"/admin/subjects/new"}>New Subject</.link>
+  </:actions>
+</.header>
+
+<div id="subjects">
+  <.subject_row :for={subject <- @subjects} subject={subject} />
+</div>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  show
+  id="subject-modal"
+  on_cancel={JS.navigate(~p"/admin/subjects")}
+>
+  <.live_component
+    module={Form}
+    id={@subject.id || :new}
+    title={@page_title}
+    subject={@subject}
+    action={@live_action}
+    navigate={~p"/admin/subjects"}
+  />
+</.modal>

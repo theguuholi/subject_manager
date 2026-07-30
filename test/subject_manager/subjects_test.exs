@@ -89,4 +89,49 @@ defmodule SubjectManager.SubjectsTest do
       assert Subjects.get_subject!(subject.id) == subject
     end
   end
+
+  describe "change_subject/2" do
+    test "given a subject when change_subject is called then returns a changeset" do
+      subject = %Subject{}
+
+      assert %Ecto.Changeset{data: ^subject} = Subjects.change_subject(subject)
+    end
+  end
+
+  describe "create_subject/1" do
+    test "given valid attributes when create_subject is called then persists the subject" do
+      attrs = valid_subject_attributes()
+
+      assert {:ok, %Subject{} = subject} = Subjects.create_subject(attrs)
+      assert subject.name == attrs.name
+    end
+  end
+
+  describe "update_subject/2" do
+    test "given a subject and valid attributes when update_subject is called then updates the subject" do
+      subject = %Subject{} |> Subject.changeset(valid_subject_attributes()) |> Repo.insert!()
+
+      assert {:ok, updated_subject} = Subjects.update_subject(subject, %{name: "Updated Name"})
+      assert updated_subject.name == "Updated Name"
+    end
+  end
+
+  describe "delete_subject/1" do
+    test "given a persisted subject when delete_subject is called then removes the subject" do
+      subject = %Subject{} |> Subject.changeset(valid_subject_attributes()) |> Repo.insert!()
+
+      assert {:ok, _deleted_subject} = Subjects.delete_subject(subject)
+      assert_raise Ecto.NoResultsError, fn -> Subjects.get_subject!(subject.id) end
+    end
+  end
+
+  defp valid_subject_attributes do
+    %{
+      name: "Lionel Messi",
+      team: "Inter Miami",
+      position: :forward,
+      bio: "Argentine professional footballer",
+      image_path: "/images/lionel-messi.jpg"
+    }
+  end
 end

@@ -25,7 +25,7 @@
           </.link>
           <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
             <%= if @current_user do %>
-                          <li :if={@current_user.role == :admin}>
+              <li :if={@current_user.role == :admin}>
                 <.link navigate={~p"/admin/subjects"}>
                   Admin
                 </.link>

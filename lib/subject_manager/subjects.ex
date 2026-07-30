@@ -75,4 +75,70 @@ defmodule SubjectManager.Subjects do
   """
   @spec get_subject!(integer() | String.t()) :: Subject.t()
   def get_subject!(id), do: Repo.get!(Subject, id)
+
+  @doc """
+  Returns a changeset for creating or updating a subject.
+
+  ## Examples
+      iex> alias SubjectManager.Subjects
+      iex> alias SubjectManager.Subjects.Subject
+      iex> attrs = %{name: "Lionel Messi", team: "Inter Miami", position: :forward, bio: "Argentine forward", image_path: "/images/messi.jpg"}
+      iex> Subjects.change_subject(%Subject{}, attrs).valid?
+      true
+  """
+  @spec change_subject(Subject.t(), map()) :: Ecto.Changeset.t()
+  def change_subject(subject, attrs \\ %{}), do: Subject.changeset(subject, attrs)
+
+  @doc """
+  Creates a subject from the given attributes.
+
+  ## Examples
+
+      iex> attrs = %{name: "Lionel Messi", team: "Inter Miami", position: :forward, bio: "Argentine professional footballer", image_path: "/images/messi.jpg"}
+      iex> {:ok, subject} = SubjectManager.Subjects.create_subject(attrs)
+      iex> {:ok, deleted_subject} = SubjectManager.Subjects.delete_subject(subject)
+      iex> deleted_subject.id == subject.id
+      true
+  """
+  @spec create_subject(map()) :: {:ok, Subject.t()} | {:error, Ecto.Changeset.t()}
+  def create_subject(attrs) do
+    %Subject{}
+    |> Subject.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a subject with the given attributes.
+
+  ## Examples
+
+      iex> attrs = %{name: "Lionel Messi", team: "Inter Miami", position: :forward, bio: "Argentine professional footballer", image_path: "/images/messi.jpg"}
+      iex> {:ok, subject} = SubjectManager.Subjects.create_subject(attrs)
+      iex> {:ok, updated_subject} = SubjectManager.Subjects.update_subject(subject, %{name: "Updated Subject"})
+      iex> updated_subject.name
+      "Updated Subject"
+      iex> {:ok, deleted_subject} = SubjectManager.Subjects.delete_subject(updated_subject)
+      iex> deleted_subject.name
+      "Updated Subject"
+  """
+  @spec update_subject(Subject.t(), map()) :: {:ok, Subject.t()} | {:error, Ecto.Changeset.t()}
+  def update_subject(subject, attrs) do
+    subject
+    |> Subject.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a subject.
+
+  ## Examples
+
+      iex> attrs = %{name: "Lionel Messi", team: "Inter Miami", position: :forward, bio: "Argentine professional footballer", image_path: "/images/messi.jpg"}
+      iex> {:ok, subject} = SubjectManager.Subjects.create_subject(attrs)
+      iex> {:ok, deleted_subject} = SubjectManager.Subjects.delete_subject(subject)
+      iex> deleted_subject.id == subject.id
+      true
+  """
+  @spec delete_subject(Subject.t()) :: {:ok, Subject.t()} | {:error, Ecto.Changeset.t()}
+  def delete_subject(subject), do: Repo.delete(subject)
 end

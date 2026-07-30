@@ -1,0 +1,31 @@
+<div>
+  <.simple_form
+    :let={form}
+    for={@changeset}
+    id="subject-form"
+    phx-change="validate"
+    phx-submit="save"
+    phx-target={@myself}
+  >
+    <.input field={form[:name]} label="Name" />
+    <.input field={form[:team]} label="Team" />
+    <.input
+      type="select"
+      field={form[:position]}
+      label="Position"
+      options={[
+        Forward: "forward",
+        Midfielder: "midfielder",
+        Winger: "winger",
+        Defender: "defender",
+        Goalkeeper: "goalkeeper"
+      ]}
+    />
+    <.input field={form[:bio]} type="textarea" label="Bio" />
+    <.input field={form[:image_path]} label="Image path" />
+
+    <:actions>
+      <.button phx-disable-with="Saving...">Save Subject</.button>
+    </:actions>
+  </.simple_form>
+</div>
