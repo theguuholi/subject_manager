@@ -38,4 +38,20 @@ Password: 1234
 
 This account is intended for local development only.
 
+### Production upload feature
+
+In local development, uploaded subject images are saved to `priv/static/uploads` and served by the app from `/uploads`.
+
+When using production uploads, configure S3 before starting the app:
+
+```bash
+export PROD=true
+export AWS_BUCKET=your-s3-bucket
+export AWS_REGION=your-aws-region
+export AWS_ACCESS_KEY_ID=your-access-key-id
+export AWS_SECRET_ACCESS_KEY=your-secret-access-key
+```
+
+These variables enable external LiveView uploads and store subject image URLs using S3.
+
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).

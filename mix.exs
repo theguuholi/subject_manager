@@ -89,7 +89,7 @@ defmodule SubjectManager.MixProject do
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.14"},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], rumfntime: false},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:quokka, "~> 2.13", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: :test}
     ]
