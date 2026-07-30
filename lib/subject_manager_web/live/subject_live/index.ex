@@ -41,7 +41,7 @@ defmodule SubjectManagerWeb.SubjectLive.Index do
         <h2>{@subject.name}</h2>
         <div class="details">
           <div class="team">
-            {@subject.team} - ~p"/subjects/#{@subject}"
+            {@subject.team} - "~p/subjects/@subject"
           </div>
           <.badge status={@subject.position} />
         </div>
