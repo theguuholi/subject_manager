@@ -25,6 +25,17 @@ defmodule SubjectManagerWeb.Router do
     live("/subjects/:id", SubjectLive.Show)
   end
 
+  scope "/admin", SubjectManagerWeb.Admin do
+    pipe_through [:browser, :require_authenticated_user, :require_admin]
+
+    live_session :require_admin,
+      on_mount: [{SubjectManagerWeb.UserAuth, :ensure_admin}] do
+      live("/subjects", SubjectLive.Index, :index)
+      live("/subjects/new", SubjectLive.Index, :new)
+      live("/subjects/:id/edit", SubjectLive.Index, :edit)
+    end
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", SubjectManagerWeb do
   #   pipe_through :api
