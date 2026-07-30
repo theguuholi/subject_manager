@@ -11,7 +11,16 @@ defmodule SubjectManager.MixProject do
       aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      dialyzer: [plt_add_apps: [:mix, :ex_unit]]
+      dialyzer: [plt_add_apps: [:mix, :ex_unit]],
+      docs: [
+        main: "readme",
+        extras: ["README.md"],
+        source_url: "https://github.com/theguuholi/subject_manager",
+        groups_for_modules: [
+          Contexts: [SubjectManager.Subjects],
+          Schemas: [SubjectManager.Subjects.Subject]
+        ]
+      ]
     ]
   end
 

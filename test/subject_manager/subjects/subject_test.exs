@@ -1,7 +1,13 @@
 defmodule SubjectManager.Subjects.SubjectTest do
+  @moduledoc """
+  Tests for the Subject schema and changeset validations.
+  """
+
   use SubjectManager.DataCase, async: true
 
   alias SubjectManager.Subjects.Subject
+
+  doctest SubjectManager.Subjects.Subject
 
   describe "changeset/2" do
     test "given valid attributes when changeset is called then returns a valid changeset" do
