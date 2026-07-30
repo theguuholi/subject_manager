@@ -1,50 +1,45 @@
 defmodule SubjectManager.Subjects do
-  import Ecto.Query
+  @moduledoc """
+  The Subjects context.
 
-  alias SubjectManager.Repo
+  Provides functions for retrieving and filtering football subjects.
+  """
+
   alias SubjectManager.Subjects.Subject
 
-  def list_subjects do
-    list_subjects(%{})
-  end
+  @type position :: Subject.position()
+  @type sort_field :: :name | :team | :position
+  @type filters :: %{
+          optional(:q) => String.t() | nil,
+          optional(:position) => position() | nil,
+          optional(:sort_by) => sort_field() | nil
+        }
 
-  def list_subjects(filters), do: list_subjects(filters, nil, 0)
+  @doc """
+  Returns all subjects without filters or pagination.
 
-  def list_subjects(filters, limit, offset) do
-    Subject
-    |> filter_by_name(Map.get(filters, :q))
-    |> filter_by_position(Map.get(filters, :position))
-    |> sort_by(Map.get(filters, :sort_by))
-    |> paginate(limit, offset)
-    |> Repo.all()
-  end
+      iex> SubjectManager.Subjects.list_subjects()
+      []
+  """
+  @spec list_subjects() :: [Subject.t()]
+  defdelegate list_subjects(), to: SubjectManager.Subjects.ListSubjects
 
-  defp filter_by_name(query, query_text) when is_binary(query_text) and query_text != "" do
-    pattern = "%#{String.downcase(query_text)}%"
+  @doc """
+  Returns subjects matching the provided filters.
 
-    where(query, [subject], fragment("lower(?) LIKE ?", subject.name, ^pattern))
-  end
+  The `:q` filter performs a case-insensitive partial match against the subject
+  name. The `:position` filter matches a position exactly, and `:sort_by`
+  supports ascending sorting by name, team, or position.
+  """
+  @spec list_subjects(filters()) :: [Subject.t()]
+  defdelegate list_subjects(filters), to: SubjectManager.Subjects.ListSubjects
 
-  defp filter_by_name(query, _query_text), do: query
+  @doc """
+  Returns a paginated list of subjects matching the provided filters.
 
-  defp filter_by_position(query, position)
-       when position in [:forward, :midfielder, :winger, :defender, :goalkeeper] do
-    where(query, [subject], subject.position == ^position)
-  end
-
-  defp filter_by_position(query, _position), do: query
-
-  defp sort_by(query, :name), do: order_by(query, asc: :name)
-  defp sort_by(query, :team), do: order_by(query, asc: :team)
-  defp sort_by(query, :position), do: order_by(query, asc: :position)
-  defp sort_by(query, _sort_by), do: query
-
-  defp paginate(query, limit, offset)
-       when is_integer(limit) and limit > 0 and is_integer(offset) and offset >= 0 do
-    query
-    |> limit(^limit)
-    |> offset(^offset)
-  end
-
-  defp paginate(query, _limit, _offset), do: query
+  `limit` controls the maximum number of records returned. `offset` controls
+  how many matching records are skipped before collecting the page.
+  """
+  @spec list_subjects(filters(), pos_integer() | nil, non_neg_integer()) :: [Subject.t()]
+  defdelegate list_subjects(filters, limit, offset), to: SubjectManager.Subjects.ListSubjects
 end

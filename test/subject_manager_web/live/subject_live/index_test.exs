@@ -168,12 +168,11 @@ defmodule SubjectManagerWeb.SubjectLive.IndexTest do
 
   defp insert_subjects(count, attrs \\ []) do
     for index <- 1..count do
-      Repo.insert!(
-        struct(
-          Subject,
-          Keyword.merge([name: "Subject #{String.pad_leading(to_string(index), 2, "0")}"], attrs)
-        )
+      Subject
+      |> struct(
+        Keyword.merge([name: "Subject #{String.pad_leading(to_string(index), 2, "0")}"], attrs)
       )
+      |> Repo.insert!()
     end
   end
 end

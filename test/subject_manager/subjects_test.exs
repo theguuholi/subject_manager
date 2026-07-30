@@ -1,8 +1,14 @@
 defmodule SubjectManager.SubjectsTest do
+  @moduledoc """
+  Tests for the public Subjects context API.
+  """
+
   use SubjectManager.DataCase
 
   alias SubjectManager.Subjects
   alias SubjectManager.Subjects.Subject
+
+  doctest SubjectManager.Subjects
 
   describe "list_subjects/0" do
     test "given no subjects when list_subjects is called then returns an empty list" do
