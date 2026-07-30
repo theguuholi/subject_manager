@@ -3,12 +3,15 @@ defmodule SubjectManager.Accounts.User do
 
   import Ecto.Changeset
 
+  @type role :: :guest | :admin
+
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
+    field :role, Ecto.Enum, values: [:guest, :admin], default: :guest
 
     timestamps(type: :utc_datetime)
   end

@@ -10,8 +10,17 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+alias SubjectManager.Accounts.User
 alias SubjectManager.Repo
 alias SubjectManager.Subjects.Subject
+
+%User{
+  email: "test@admin.com",
+  hashed_password: Bcrypt.hash_pwd_salt("1234"),
+  confirmed_at: DateTime.utc_now() |> DateTime.truncate(:second),
+  role: :admin
+}
+|> Repo.insert!()
 
 %Subject{
   name: "Lionel Messi",
