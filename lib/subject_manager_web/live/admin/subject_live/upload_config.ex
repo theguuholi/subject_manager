@@ -5,7 +5,6 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.UploadConfig do
 
   @upload_directory "priv/static/uploads"
   @public_upload_path "/uploads"
-  @s3_uploads? Mix.env() == :prod
 
   def upload_options do
     if production?() do
@@ -54,7 +53,7 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.UploadConfig do
   end
 
   defp production? do
-    @s3_uploads?
+    Application.get_env(:subject_manager, :env) == :prod
   end
 
   # coveralls-ignore-start
