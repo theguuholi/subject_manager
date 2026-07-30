@@ -69,4 +69,10 @@ defmodule SubjectManager.Subjects do
     end)
     |> Repo.all()
   end
+
+  @doc """
+  Returns the subject with the given ID, raising if it does not exist.
+  """
+  @spec get_subject!(integer() | String.t()) :: Subject.t()
+  def get_subject!(id), do: Repo.get!(Subject, id)
 end

@@ -1,0 +1,21 @@
+<div class="subject-show" id="subject-show">
+  <.link navigate={~p"/subjects"} id="back-to-subjects">Back to Subjects</.link>
+
+  <div class="subject">
+    <img id="subject-image" src={@subject.image_path} alt={@subject.name} />
+
+    <section>
+      <header>
+        <h2 id="subject-name">{@subject.name}</h2>
+        <h3 id="subject-team">{@subject.team}</h3>
+        <div id="subject-position">
+          <.badge status={@subject.position} />
+        </div>
+      </header>
+
+      <div id="subject-bio" class="description">
+        {@subject.bio}
+      </div>
+    </section>
+  </div>
+</div>

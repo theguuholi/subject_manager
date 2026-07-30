@@ -36,6 +36,11 @@ defmodule SubjectManagerWeb.SubjectLive.IndexTest do
 
       assert has_element?(view, "#subject-#{first_subject.id}")
       assert has_element?(view, "#subject-#{second_subject.id}")
+
+      assert has_element?(
+               view,
+               "#subject-#{first_subject.id}[href='/subjects/#{first_subject.id}']"
+             )
     end
   end
 

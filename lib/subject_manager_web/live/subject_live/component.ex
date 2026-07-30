@@ -6,13 +6,13 @@ defmodule SubjectManagerWeb.SubjectLive.Component do
 
   def subject(assigns) do
     ~H"""
-    <.link navigate="#" id={@dom_id}>
+    <.link navigate={~p"/subjects/#{@subject}"} id={@dom_id}>
       <div class="card">
         <img src={@subject.image_path} />
         <h2>{@subject.name}</h2>
         <div class="details">
           <div class="team">
-            {@subject.team} - "~p/subjects/@subject"
+            {@subject.team}
           </div>
           <.badge status={@subject.position} />
         </div>
