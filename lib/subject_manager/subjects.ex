@@ -1,6 +1,6 @@
 defmodule SubjectManager.Subjects do
-  alias SubjectManager.Subjects.Subject
   alias SubjectManager.Repo
+  alias SubjectManager.Subjects.Subject
 
   def list_subjects do
     Repo.all(Subject)

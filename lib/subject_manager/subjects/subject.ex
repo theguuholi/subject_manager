@@ -1,5 +1,6 @@
 defmodule SubjectManager.Subjects.Subject do
   use Ecto.Schema
+
   import Ecto.Changeset
 
   schema "subjects" do
@@ -18,6 +19,6 @@ defmodule SubjectManager.Subjects.Subject do
     |> cast(attrs, [:name, :team, :position, :bio, :image_path])
     |> validate_required([:name, :team, :position, :bio, :image_path])
     |> validate_length(:name, min: 3)
-    |> validate_length(:description, min: 10)
+    |> validate_length(:bio, min: 10)
   end
 end

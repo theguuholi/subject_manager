@@ -15,9 +15,9 @@ defmodule SubjectManagerWeb.CoreComponents do
   Icons are provided by [heroicons](https://heroicons.com). See `icon/1` for usage.
   """
   use Phoenix.Component
+  use Gettext, backend: SubjectManagerWeb.Gettext
 
   alias Phoenix.LiveView.JS
-  use Gettext, backend: SubjectManagerWeb.Gettext
 
   @doc """
   Renders a modal.
@@ -296,7 +296,7 @@ defmodule SubjectManagerWeb.CoreComponents do
 
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
-    |> assign(:errors, Enum.map(errors, &translate_error(&1)))
+    |> assign(:errors, Enum.map(errors, &translate_error/1))
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()

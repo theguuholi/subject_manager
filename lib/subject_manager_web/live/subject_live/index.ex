@@ -1,8 +1,9 @@
 defmodule SubjectManagerWeb.SubjectLive.Index do
   use SubjectManagerWeb, :live_view
 
-  alias SubjectManager.Subjects
   import SubjectManagerWeb.CustomComponents
+
+  alias SubjectManager.Subjects
 
   def mount(_params, _session, socket) do
     socket =
@@ -14,33 +15,18 @@ defmodule SubjectManagerWeb.SubjectLive.Index do
     {:ok, socket}
   end
 
-  def render(assigns) do
-    ~H"""
-    <div class="subject-index">
-      <.filter_form form={@form} />
-
-      <div class="subjects" id="subjects">
-        <div id="empty" class="no-results only:block hidden">
-          No subjects found. Try changing your filters.
-        </div>
-        <.subject :for={subject <- @subjects} subject={subject} dom_id={"subject-#{subject.id}"} />
-      </div>
-    </div>
-    """
-  end
-
   attr(:subject, SubjectManager.Subjects.Subject, required: true)
   attr(:dom_id, :string, required: true)
 
   def subject(assigns) do
     ~H"""
-    <.link navigate={~p"/subjects/#{@subject}"} id={@dom_id}>
+    <.link navigate="#" id={@dom_id}>
       <div class="card">
         <img src={@subject.image_path} />
         <h2>{@subject.name}</h2>
         <div class="details">
           <div class="team">
-            {@subject.team}
+            {@subject.team} - "~p/subjects/@subject"
           </div>
           <.badge status={@subject.position} />
         </div>
