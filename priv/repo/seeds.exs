@@ -14,13 +14,32 @@ alias SubjectManager.Accounts.User
 alias SubjectManager.Repo
 alias SubjectManager.Subjects.Subject
 
+upsert_by = fn %schema{} = struct, field ->
+  value = Map.fetch!(struct, field)
+
+  attrs =
+    struct
+    |> Map.from_struct()
+    |> Map.drop([:__meta__, :id, :inserted_at, :updated_at])
+
+  case Repo.get_by(schema, [{field, value}]) do
+    nil ->
+      Repo.insert!(struct)
+
+    existing ->
+      existing
+      |> Ecto.Changeset.change(attrs)
+      |> Repo.update!()
+  end
+end
+
 %User{
   email: "test@admin.com",
   hashed_password: Bcrypt.hash_pwd_salt("1234"),
   confirmed_at: DateTime.utc_now() |> DateTime.truncate(:second),
   role: :admin
 }
-|> Repo.insert!()
+|> upsert_by.(:email)
 
 %Subject{
   name: "Lionel Messi",
@@ -31,7 +50,7 @@ alias SubjectManager.Subjects.Subject
   position: :forward,
   image_path: "/images/lionel-messi.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Luis Suárez",
@@ -42,7 +61,7 @@ alias SubjectManager.Subjects.Subject
   position: :forward,
   image_path: "/images/luis-suarez.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Edinson Cavani",
@@ -53,7 +72,7 @@ alias SubjectManager.Subjects.Subject
   position: :forward,
   image_path: "/images/edinson-cavani.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Darwin Núñez",
@@ -64,7 +83,7 @@ alias SubjectManager.Subjects.Subject
   position: :forward,
   image_path: "/images/darwin-nunez.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Julián Álvarez",
@@ -75,7 +94,7 @@ alias SubjectManager.Subjects.Subject
   position: :forward,
   image_path: "/images/julian-alvarez.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Paulo Dybala",
@@ -86,7 +105,7 @@ alias SubjectManager.Subjects.Subject
   position: :forward,
   image_path: "/images/paulo-dybala.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Lautaro Martínez",
@@ -97,7 +116,7 @@ alias SubjectManager.Subjects.Subject
   position: :forward,
   image_path: "/images/lautaro-martinez.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Giovani Lo Celso",
@@ -108,7 +127,7 @@ alias SubjectManager.Subjects.Subject
   position: :midfielder,
   image_path: "/images/giovani-lo-celso.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Diego Forlán",
@@ -119,7 +138,7 @@ alias SubjectManager.Subjects.Subject
   position: :forward,
   image_path: "/images/diego-forlan.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Brian Rodríguez",
@@ -130,7 +149,7 @@ alias SubjectManager.Subjects.Subject
   position: :winger,
   image_path: "/images/brian-rodriguez.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Diego Godín",
@@ -141,7 +160,7 @@ alias SubjectManager.Subjects.Subject
   position: :defender,
   image_path: "/images/diego-godin.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
 
 %Subject{
   name: "Emiliano Martínez",
@@ -152,4 +171,4 @@ alias SubjectManager.Subjects.Subject
   position: :goalkeeper,
   image_path: "/images/emiliano-martinez.jpg"
 }
-|> Repo.insert!()
+|> upsert_by.(:name)
