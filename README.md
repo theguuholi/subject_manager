@@ -27,4 +27,15 @@ asdf install
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+### Development admin account
+
+After running the seeds, you can log in with:
+
+```text
+Email: test@admin.com
+Password: 1234
+```
+
+This account is intended for local development only.
+
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).

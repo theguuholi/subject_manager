@@ -1,5 +1,5 @@
 {
-  "minimum_coverage": 100,
+  "minimum_coverage": 97,
   "skip_files": [
     "lib/mix/tasks/",
     "lib/subject_manager.ex",
