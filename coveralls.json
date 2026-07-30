@@ -1,5 +1,5 @@
 {
-  "minimum_coverage": 60,
+  "minimum_coverage": 100,
   "skip_files": [
     "lib/mix/tasks/",
     "lib/subject_manager.ex",
@@ -8,6 +8,9 @@
     "lib/subject_manager_web.ex",
     "lib/subject_manager_web/gettext.ex",
     "lib/subject_manager_web/endpoint.ex",
-    "lib/subject_manager/repo.ex"
+    "lib/subject_manager/repo.ex",
+    "lib/subject_manager_web/components/core_components.ex",
+    "lib/subject_manager_web/components/layouts.ex",
+    "lib/subject_manager_web/telemetry.ex"
   ]
 }
