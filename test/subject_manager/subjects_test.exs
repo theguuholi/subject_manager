@@ -10,23 +10,21 @@ defmodule SubjectManager.SubjectsTest do
 
   doctest SubjectManager.Subjects
 
-  describe "list_subjects/0" do
-    test "given no subjects when list_subjects is called then returns an empty list" do
-      assert Subjects.list_subjects() == []
+  describe "list_subjects/1" do
+    test "given no filters when list_subjects is called then returns an empty list" do
+      assert Subjects.list_subjects(%{}) == []
     end
 
-    test "given persisted subjects when list_subjects is called then returns all subjects" do
+    test "given filters with default pagination when list_subjects is called then returns all subjects" do
       first_subject = Repo.insert!(%Subject{name: "Lionel Messi"})
       second_subject = Repo.insert!(%Subject{name: "Luis Suárez"})
 
-      subjects = Subjects.list_subjects()
+      subjects = Subjects.list_subjects(%{})
 
       assert subjects |> MapSet.new(& &1.id) ==
                MapSet.new([first_subject.id, second_subject.id])
     end
-  end
 
-  describe "list_subjects/1" do
     test "given a name query when list_subjects is called then returns matching subjects case insensitively" do
       matching_subject = Repo.insert!(%Subject{name: "Lionel Messi"})
       Repo.insert!(%Subject{name: "Luis Suárez"})
@@ -71,16 +69,14 @@ defmodule SubjectManager.SubjectsTest do
 
       assert [first_subject.id, second_subject.id] == Enum.map(subjects, & &1.id)
     end
-  end
 
-  describe "list_subjects/3" do
     test "given a limit and offset when list_subjects is called then returns one page of subjects" do
       subjects =
         for index <- 1..3 do
           Repo.insert!(%Subject{name: "Subject #{index}"})
         end
 
-      page = Subjects.list_subjects(%{}, 1, 1)
+      page = Subjects.list_subjects(%{limit: 1, offset: 1})
 
       assert [Enum.at(subjects, 1).id] == Enum.map(page, & &1.id)
     end

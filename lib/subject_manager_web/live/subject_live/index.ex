@@ -20,7 +20,7 @@ defmodule SubjectManagerWeb.SubjectLive.Index do
 
   def handle_params(params, _uri, socket) do
     filters = filters_from_params(params)
-    subjects = Subjects.list_subjects(filters, @page_size, 0)
+    subjects = load_subjects(filters, 0)
 
     {:noreply,
      socket
@@ -42,8 +42,7 @@ defmodule SubjectManagerWeb.SubjectLive.Index do
   end
 
   def handle_event("load-more", _params, socket) do
-    new_subjects =
-      Subjects.list_subjects(socket.assigns.filters, @page_size, socket.assigns.offset)
+    new_subjects = load_subjects(socket.assigns.filters, socket.assigns.offset)
 
     {:noreply,
      socket
@@ -58,6 +57,11 @@ defmodule SubjectManagerWeb.SubjectLive.Index do
       position: valid_param(Map.get(params, "position"), @positions),
       sort_by: valid_param(Map.get(params, "sort_by"), @sort_fields)
     }
+  end
+
+  defp load_subjects(filters, offset) do
+    filters = Map.merge(filters, %{limit: @page_size, offset: offset})
+    Subjects.list_subjects(filters)
   end
 
   defp valid_param(param, allowed) do
