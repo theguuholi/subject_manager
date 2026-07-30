@@ -78,6 +78,18 @@ defmodule SubjectManagerWeb.SubjectLive.IndexTest do
   end
 
   describe "handle_event/3" do
+    test "given empty filters when the form changes then patches the unfiltered page", %{
+      conn: conn
+    } do
+      assert {:ok, view, _live_view} = live(conn, ~p"/subjects")
+
+      view
+      |> element("#filter-form")
+      |> render_change(%{"filter" => %{"q" => "", "position" => "", "sort_by" => ""}})
+
+      assert_patch(view, ~p"/subjects")
+    end
+
     test "given a name filter when the form changes then patches the page with matching subjects",
          %{
            conn: conn
