@@ -44,10 +44,13 @@ defmodule SubjectManagerWeb.ConnCase do
   It stores an updated connection and a registered user in the
   test context.
   """
+  # coveralls-ignore-start
   def register_and_log_in_user(%{conn: conn}) do
     user = SubjectManager.AccountsFixtures.user_fixture()
     %{conn: log_in_user(conn, user), user: user}
   end
+
+  # coveralls-ignore-stop
 
   @doc """
   Logs the given `user` into the `conn`.

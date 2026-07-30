@@ -1,6 +1,8 @@
 defmodule SubjectManagerWeb.Admin.SubjectLive.Index do
   use SubjectManagerWeb, :live_view
 
+  import __MODULE__.Components
+
   alias SubjectManager.Subjects
   alias SubjectManager.Subjects.Subject
   alias SubjectManagerWeb.Admin.SubjectLive.Form
@@ -35,30 +37,5 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.Index do
     socket
     |> assign(page_title: "Edit Subject")
     |> assign(:subject, Subjects.get_subject!(id))
-  end
-
-  def subject_row(assigns) do
-    ~H"""
-    <article id={"subject-#{@subject.id}"} class="flex items-center justify-between border-b p-4">
-      <div>
-        <h2>{@subject.name}</h2>
-        <p>{@subject.team} · {@subject.position}</p>
-      </div>
-
-      <div class="flex gap-4">
-        <.link navigate={~p"/subjects/#{@subject}"}>Show</.link>
-        <.link id={"edit-subject-#{@subject.id}"} patch={~p"/admin/subjects/#{@subject}/edit"}>
-          Edit
-        </.link>
-        <.link
-          id={"delete-subject-#{@subject.id}"}
-          phx-click={JS.push("delete", value: %{id: @subject.id})}
-          data-confirm="Are you sure?"
-        >
-          Delete
-        </.link>
-      </div>
-    </article>
-    """
   end
 end

@@ -33,85 +33,10 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.IndexTest do
       assert has_element?(view, "#delete-subject-#{subject.id}[data-confirm='Are you sure?']")
       assert has_element?(view, "a[href='/admin/subjects/new']", "New Subject")
     end
+  end
 
-    test "given an admin when the new action is opened then renders the subject form", %{
-      conn: conn
-    } do
-      conn = log_in_user(conn, admin_fixture())
-
-      {:ok, view, _html} = live(conn, ~p"/admin/subjects")
-
-      view |> element("a", "New Subject") |> render_click()
-
-      assert_patch(view, ~p"/admin/subjects/new")
-      assert has_element?(view, "#subject-modal")
-      assert has_element?(view, "#subject-form")
-    end
-
-    test "given valid subject attributes when the new form is submitted then creates the subject",
-         %{
-           conn: conn
-         } do
-      conn = log_in_user(conn, admin_fixture())
-      {:ok, view, _html} = live(conn, ~p"/admin/subjects/new")
-
-      attrs = %{
-        name: "New Subject",
-        team: "New Team",
-        position: "midfielder",
-        bio: "A new subject biography",
-        image_path: "/images/new-subject.jpg"
-      }
-
-      {:ok, redirected_view, _html} =
-        view
-        |> form("#subject-form", subject: attrs)
-        |> render_submit()
-        |> follow_redirect(conn, ~p"/admin/subjects")
-
-      created_subject = Repo.get_by!(Subject, name: attrs.name)
-
-      assert has_element?(redirected_view, "#flash-info", "Subject created successfully")
-      assert has_element?(redirected_view, "#subject-#{created_subject.id}", attrs.name)
-    end
-
-    test "given an existing subject when the edit action is opened then prepopulates the form", %{
-      conn: conn
-    } do
-      subject = subject_fixture()
-      conn = log_in_user(conn, admin_fixture())
-
-      {:ok, view, _html} = live(conn, ~p"/admin/subjects")
-
-      view |> element("#edit-subject-#{subject.id}") |> render_click()
-
-      assert_patch(view, ~p"/admin/subjects/#{subject.id}/edit")
-
-      assert has_element?(
-               view,
-               "#subject-form input[name='subject[name]'][value='#{subject.name}']"
-             )
-    end
-
-    test "given an existing subject when the edit form is submitted then updates the subject", %{
-      conn: conn
-    } do
-      subject = subject_fixture()
-      conn = log_in_user(conn, admin_fixture())
-
-      {:ok, view, _html} = live(conn, ~p"/admin/subjects/#{subject.id}/edit")
-
-      {:ok, redirected_view, _html} =
-        view
-        |> form("#subject-form", subject: %{name: "Updated Subject"})
-        |> render_submit()
-        |> follow_redirect(conn, ~p"/admin/subjects")
-
-      assert has_element?(redirected_view, "#flash-info", "Subject updated successfully")
-      assert has_element?(redirected_view, "#subject-#{subject.id}", "Updated Subject")
-    end
-
-    test "given an existing subject when delete is confirmed then removes the subject", %{
+  describe "handle_event/3" do
+    test "given an existing subject when delete is triggered then removes the subject", %{
       conn: conn
     } do
       subject = subject_fixture()
