@@ -15,21 +15,6 @@ defmodule SubjectManagerWeb.SubjectLive.Index do
     {:ok, socket}
   end
 
-  def render(assigns) do
-    ~H"""
-    <div class="subject-index">
-      <.filter_form form={@form} />
-
-      <div class="subjects" id="subjects">
-        <div id="empty" class="no-results only:block hidden">
-          No subjects found. Try changing your filters.
-        </div>
-        <.subject :for={subject <- @subjects} subject={subject} dom_id={"subject-#{subject.id}"} />
-      </div>
-    </div>
-    """
-  end
-
   attr(:subject, SubjectManager.Subjects.Subject, required: true)
   attr(:dom_id, :string, required: true)
 
