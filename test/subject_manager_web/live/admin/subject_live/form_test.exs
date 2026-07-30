@@ -54,6 +54,20 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.FormTest do
 
       assert has_element?(view, "#subject-form p", "can't be blank")
     end
+
+    test "given params without subject attributes when form changes then keeps the socket unchanged",
+         %{
+           conn: conn
+         } do
+      conn = log_in_user(conn, admin_fixture())
+      {:ok, view, _html} = live(conn, ~p"/admin/subjects/new")
+
+      view
+      |> form("#subject-form", %{})
+      |> render_change()
+
+      assert has_element?(view, "#subject-form")
+    end
   end
 
   describe "save/2" do

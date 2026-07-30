@@ -9,7 +9,9 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.UploadConfig do
 
   def upload_options do
     if production?() do
+      # coveralls-ignore-start
       [{:external, &s3_metadata/2} | base_upload_options()]
+      # coveralls-ignore-stop
     else
       base_upload_options()
     end
@@ -30,7 +32,9 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.UploadConfig do
 
   def image_path(entry) do
     if production?() do
+      # coveralls-ignore-start
       Path.join(s3_url(), filename(entry))
+      # coveralls-ignore-stop
     else
       Path.join(@public_upload_path, filename(entry))
     end
@@ -53,6 +57,7 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.UploadConfig do
     @s3_uploads?
   end
 
+  # coveralls-ignore-start
   defp s3_url do
     bucket = System.fetch_env!("AWS_BUCKET")
     region = System.fetch_env!("AWS_REGION")
@@ -87,4 +92,6 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.UploadConfig do
 
     {:ok, metadata, socket}
   end
+
+  # coveralls-ignore-stop
 end

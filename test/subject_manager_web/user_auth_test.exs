@@ -186,6 +186,27 @@ defmodule SubjectManagerWeb.UserAuthTest do
     end
   end
 
+  describe "on_mount :ensure_admin" do
+    test "halts and redirects to the home page if the user is not an admin", %{
+      conn: conn,
+      user: user
+    } do
+      user_token = Accounts.generate_user_session_token(user)
+      session = conn |> put_session(:user_token, user_token) |> get_session()
+
+      socket = %LiveView.Socket{
+        endpoint: SubjectManagerWeb.Endpoint,
+        assigns: %{__changed__: %{}, flash: %{}}
+      }
+
+      {:halt, updated_socket} = UserAuth.on_mount(:ensure_admin, %{}, session, socket)
+
+      assert updated_socket.assigns.current_user.id == user.id
+      assert {:redirect, %{to: to}} = updated_socket.redirected
+      assert to == ~p"/"
+    end
+  end
+
   describe "on_mount :redirect_if_user_is_authenticated" do
     test "redirects if there is an authenticated  user ", %{conn: conn, user: user} do
       user_token = Accounts.generate_user_session_token(user)
