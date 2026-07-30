@@ -1,8 +1,9 @@
 defmodule SubjectManagerWeb.SubjectLive.Index do
   use SubjectManagerWeb, :live_view
 
-  alias SubjectManager.Subjects
   import SubjectManagerWeb.CustomComponents
+
+  alias SubjectManager.Subjects
 
   def mount(_params, _session, socket) do
     socket =

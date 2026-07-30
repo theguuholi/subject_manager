@@ -1,0 +1,13 @@
+{
+  "minimum_coverage": 60,
+  "skip_files": [
+    "lib/mix/tasks/",
+    "lib/subect_manager/application.ex",
+    "lib/subect_manager.ex",
+    "lib/subect_manager_web/components/core_components.ex",
+    "lib/subect_manager_web/gettext.ex",
+    "lib/subect_manager_web/endpoint.ex",
+    "lib/subect_manager_web/telemetry.ex",
+    "lib/subect_manager_web.ex"
+  ]
+}

@@ -1,5 +1,6 @@
 defmodule SubjectManager.Subjects.Subject do
   use Ecto.Schema
+
   import Ecto.Changeset
 
   schema "subjects" do

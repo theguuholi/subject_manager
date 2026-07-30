@@ -18,12 +18,12 @@ defmodule SubjectManager.DataCase do
 
   using do
     quote do
-      alias SubjectManager.Repo
-
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
       import SubjectManager.DataCase
+
+      alias SubjectManager.Repo
     end
   end
 
