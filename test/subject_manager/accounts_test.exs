@@ -4,7 +4,8 @@ defmodule SubjectManager.AccountsTest do
   import SubjectManager.AccountsFixtures
 
   alias SubjectManager.Accounts
-  alias SubjectManager.Accounts.{User, UserToken}
+  alias SubjectManager.Accounts.User
+  alias SubjectManager.Accounts.UserToken
 
   describe "get_user_by_email/1" do
     test "does not return the user if the email does not exist" do
@@ -86,10 +87,15 @@ defmodule SubjectManager.AccountsTest do
 
     test "registers users with a hashed password" do
       email = unique_user_email()
-      {:ok, user} = Accounts.register_user(valid_user_attributes(email: email))
+      attributes = valid_user_attributes(email: email)
+
+      {:ok, user} =
+        attributes
+        |> Accounts.register_user()
+
       assert user.email == email
       assert is_binary(user.hashed_password)
-      assert is_nil(user.confirmed_at)
+      refute user.confirmed_at
       assert is_nil(user.password)
     end
   end
