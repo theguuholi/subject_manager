@@ -40,6 +40,19 @@ defmodule SubjectManagerWeb.SubjectLive.IndexTest do
   end
 
   describe "infinite scroll" do
+    test "given no more subjects when load more is triggered then keeps the current subjects", %{
+      conn: conn
+    } do
+      subject = Repo.insert!(%Subject{name: "Lionel Messi"})
+
+      assert {:ok, view, _live_view} = live(conn, ~p"/subjects")
+
+      render_hook(view, "load-more")
+
+      assert has_element?(view, "#subject-#{subject.id}")
+      refute has_element?(view, "#infinite-scroll")
+    end
+
     test "given more than nine subjects when the page is mounted then renders at most nine subjects",
          %{
            conn: conn
