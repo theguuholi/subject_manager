@@ -33,8 +33,10 @@ defmodule SubjectManagerWeb.Admin.SubjectLive.IndexTest do
       assert has_element?(view, "#delete-subject-#{subject.id}[data-confirm='Are you sure?']")
       assert has_element?(view, "a[href='/admin/subjects/new']", "New Subject")
     end
+  end
 
-    test "given an existing subject when delete is confirmed then removes the subject", %{
+  describe "handle_event/3" do
+    test "given an existing subject when delete is triggered then removes the subject", %{
       conn: conn
     } do
       subject = subject_fixture()
